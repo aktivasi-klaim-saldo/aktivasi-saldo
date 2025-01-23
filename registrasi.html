@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulir Registrasi Pencairan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        .hidden { display: none; }
+        .moving-text {
+            overflow: hidden;
+            white-space: nowrap;
+            position: relative;
+            background-color: wheat;
+            color: black;
+            font-size: 20px;
+            font-weight: bold;
+            padding: 10px 0;
+            text-align: center;
+        }
+
+        @keyframes scrollText {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+
+        .moving-text span {
+            display: inline-block;
+            animation: scrollText 10s linear infinite;
+        }
+    </style>
+    <script>
+        function validateForm(event) {
+            event.preventDefault();
+
+            const name = document.getElementById("name").value.trim();
+            const email = document.getElementById("email").value.trim();
+            const phone = document.getElementById("phone").value.trim();
+            const bank = document.getElementById("bank").value.trim();
+            const accountNumber = document.getElementById("account-number").value.trim();
+
+            let isValid = true;
+
+            if (!name) {
+                showError("name", "Nama lengkap wajib diisi.");
+                isValid = false;
+            } else {
+                hideError("name");
+            }
+
+            if (!email || !/\S+@\S+\.\S+/.test(email)) {
+                showError("email", "Email tidak valid.");
+                isValid = false;
+            } else {
+                hideError("email");
+            }
+
+            if (!phone || !/^\d{10,15}$/.test(phone)) {
+                showError("phone", "Nomor telepon harus terdiri dari 10-15 angka.");
+                isValid = false;
+            } else {
+                hideError("phone");
+            }
+
+            if (!bank) {
+                showError("bank", "Nama bank atau e-wallet wajib diisi.");
+                isValid = false;
+            } else {
+                hideError("bank");
+            }
+
+            if (!accountNumber) {
+                showError("account-number", "Nomor rekening atau e-wallet wajib diisi.");
+                isValid = false;
+            } else {
+                hideError("account-number");
+            }
+
+            if (isValid) {
+                document.getElementById("formulir-registrasi").classList.add("hidden");
+                document.getElementById("konfirmasi-pembayaran").classList.remove("hidden");
+            }
+        }
+
+        function showError(id, message) {
+            const errorElement = document.getElementById(`${id}-error`);
+            errorElement.textContent = message;
+            errorElement.classList.remove("hidden");
+        }
+
+        function hideError(id) {
+            const errorElement = document.getElementById(`${id}-error`);
+            errorElement.classList.add("hidden");
+        }
+    </script>
+</head>
+<body class="bg-gray-100 font-roboto">
+
+    <!-- Halaman Formulir Registrasi -->
+    <div id="formulir-registrasi">
+        <div class="moving-text">
+            <span>Registrasi sekarang. Jangan lewatkan kesempatan Anda sekarang juga!</span>
+        </div>
+
+        <div class="container mx-auto p-4">
+            <div class="max-w-lg mx-auto bg-white p-8 rounded-lg shadow-lg">
+                <h2 class="text-2xl font-bold mb-6 text-center">Formulir Registrasi Pencairan</h2>
+                <p class="text-red-500 font-bold mb-6 text-center">Harap diperhatikan: Registrasi ini memerlukan pembayaran sebesar Rp100.000.</p>
+                <form onsubmit="validateForm(event)">
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="name">Nama Lengkap</label>
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" id="name" type="text" placeholder="Nama Lengkap">
+                        <p id="name-error" class="text-red-500 text-xs italic hidden"></p>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="email">Email</label>
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" id="email" type="email" placeholder="Email">
+                        <p id="email-error" class="text-red-500 text-xs italic hidden"></p>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="phone">Nomor Telepon</label>
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" id="phone" type="tel" placeholder="Nomor Telepon">
+                        <p id="phone-error" class="text-red-500 text-xs italic hidden"></p>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="payment-method">Pencairan ke</label>
+                        <select class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" id="payment-method">
+                            <option value="bank">Bank</option>
+                            <option value="e-wallet">E-Wallet</option>
+                        </select>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="bank">Atas nama Bank/E-Wallet</label>
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" id="bank" type="text" placeholder="Nama Bank/E-Wallet">
+                        <p id="bank-error" class="text-red-500 text-xs italic hidden"></p>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="account-number">Nomor Rekening/Nomor E-Wallet</label>
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" id="account-number" type="text" placeholder="Nomor Rekening/Nomor E-Wallet">
+                        <p id="account-number-error" class="text-red-500 text-xs italic hidden"></p>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="amount">Jumlah Pencairan</label>
+                        <select class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" id="amount">
+                            <option value="10000000">Rp10.000.000</option>
+                            <option value="5000000">Rp5.000.000</option>
+                        </select>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" type="submit">
+                            Konfirmasi Pencairan
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Halaman Konfirmasi Pembayaran -->
+    <div id="konfirmasi-pembayaran" class="hidden">
+        <div class="container mx-auto p-4">
+            <div class="max-w-lg mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
+                <div class="p-6">
+                    <h2 class="text-3xl font-bold mb-6 text-center">Konfirmasi Pembayaran</h2>
+                    <p class="mb-4 text-gray-700 text-lg">Silakan lakukan pembayaran biaya registrasi sebesar <strong>Rp100.000</strong> ke rekening atau e-wallet di bawah ini:</p>
+                    <div class="space-y-4 mb-6">
+                        <div class="flex items-center space-x-4">
+                            <img alt="Logo Dana" class="w-12 h-12" src="dana1.png">
+                            <p class="text-lg"><strong>Dana:</strong> 0831984646 A/n Bambang</p>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <img alt="Logo Bank Jago" class="w-12 h-12" src="jago1.png">
+                            <p class="text-lg"><strong>Bank Jago:</strong> 845434313 A/n Bambang</p>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <img alt="Logo Bank Mandiri" class="w-12 h-12" src="mandiri1.png">
+                            <p class="text-lg"><strong>Bank Mandiri:</strong> 0846434646 A/n Bambang</p>
+                        </div>
+                    </div>
+
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-gray-700 mb-2" for="bukti-transaksi">Upload Bukti Transaksi</label>
+                        <input type="file" id="bukti-transaksi" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg">
+                    </div>
+
+                    <button class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition duration-200">Konfirmasi Pembayaran</button>
+                    
+                    <div class="mt-6 text-center">
+                        <p class="text-sm text-gray-600">Jika pencairan uang <strong>Rp10.000.000</strong> belum masuk dalam waktu 10 menit, silahkan hubungi kami via WhatsApp: <a href="https://wa.me/6283891548727" class="text-blue-500 underline">klik di sini</a>.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
